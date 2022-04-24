@@ -5,16 +5,15 @@ import Board from "./Components/Board/Board";
 import "./App.css";
 import Editable from "./Components/Editabled/Editable";
 
-
-
 function App() {
-  const [lists, setLists] = useState(
-    JSON.parse(localStorage.getItem("prac-kanban")) || []
-  );
 
-  const [boards, setBoards] = useState(
-    JSON.parse(localStorage.getItem("prac-kanban")) || []
-  );
+  const [boards, setBoards] = useState([
+    { id: 1, title: "default", list: []}
+   ]);
+   
+  const [activeBoard, setActiveBoard] = useState(boards[0])
+
+  const [lists, setLists] = useState(activeBoard.list);
 
   const [targetCard, setTargetCard] = useState({
     bid: "",
@@ -32,14 +31,20 @@ function App() {
   };
 
   const addboardHandler = (name) => {
-    const tempBoards = [...lists];
+    const tempBoards = [...boards];
     tempBoards.push({
       id: Date.now() + Math.random() * 2,
       title: name,
-      // cards: [],
+      list: []
     });
     setBoards(tempBoards);
   };
+
+  const changeActiveBoard = (id) => {
+    const tempActiveBoard = boards.find(board => board.id === id);
+    activeBoard.list = lists;
+    setActiveBoard(tempActiveBoard);
+  }
 
   const removeList = (id) => {
     const index = lists.findIndex((item) => item.id === id);
@@ -51,12 +56,15 @@ function App() {
   };
 
   const removeboard = (id) => {
-    const index = lists.findIndex((item) => item.id === id);
-    if (index < 0) return;
-
-    const tempBoards = [...boards];
-    tempBoards.splice(index, 1);
-    setLists(tempBoards);
+    const tempBoards = boards.filter((item) => item.id !== id);
+    if (tempBoards.length === 0)
+      tempBoards.push({
+        id: 1, title: "default", list: []
+      });      
+  
+    if (activeBoard.id === id)
+      setActiveBoard(tempBoards[0]);
+    setBoards(tempBoards);
   };
 
   const addCardHandler = (id, title) => {
@@ -143,12 +151,15 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem("prac-kanban", JSON.stringify(lists));
+    localStorage.setItem("prac-kanban", JSON.stringify(lists))
   }, [lists]);
 
+  useEffect(() => {
+    setLists(activeBoard.list);
+  }, [activeBoard]);
+
   return (
-    <div className="app">
-      
+    <div className="app"> 
       <div className="topnav">
         <a className="active" href="#home">Trello</a>
         <a href="#about">Workspaces</a>
@@ -157,7 +168,13 @@ function App() {
         <a href="#contact">Templates</a>
         <input type="text" placeholder="Search.." />
       </div>
-      <Board></Board>
+      <Board
+        boards={boards}
+        addboardHandler={addboardHandler}
+        changeActiveBoard={changeActiveBoard}
+        removeBoardHandler={removeboard}
+      >
+      </Board>
 
       <div className="app_lists_container">
         <div className="app_lists">
