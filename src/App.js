@@ -157,9 +157,11 @@ function App() {
         <a href="#contact">Templates</a>
         <input type="text" placeholder="Search.." />
       </div>
-      <Board></Board>
+      
+      
 
       <div className="app_lists_container">
+      <Board></Board>
         <div className="app_lists">
           {lists.map((item) => (
             <List

@@ -103,10 +103,11 @@ border-radius: 10px;
 
 .app_lists {
   height: 100%;
-  width: fit-content;
+  width: 80%;
   padding: 10px 30px;
   display: flex;
   gap: 30px;
+  float: right;
 }
 
 .app_lists_last {
