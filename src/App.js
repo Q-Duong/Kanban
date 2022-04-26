@@ -7,9 +7,10 @@ import Editable from "./Components/Editabled/Editable";
 
 function App() {
 
-  const [boards, setBoards] = useState([
-    { id: 1, title: "default", list: []}
-   ]);
+  const [boards, setBoards] = useState(
+    JSON.parse(localStorage.getItem("prac-kanban")) ||
+    [{ id: 1, title: "default", list: [] }]
+  );
    
   const [activeBoard, setActiveBoard] = useState(boards[0])
 
@@ -42,6 +43,7 @@ function App() {
   const changeActiveBoard = (id) => {
     const tempActiveBoard = boards.find(board => board.id === id);
     activeBoard.list = lists;
+    localStorage.setItem("prac-kanban", JSON.stringify(boards))
     setActiveBoard(tempActiveBoard);
   }
 
@@ -97,7 +99,7 @@ function App() {
   };
 
   const dragEnded = (bid, cid) => {
-    let s_listIndex, s_cardIndex, t_listIndex, t_cardIndex;
+    let s_listIndex, s_cardIndex, t_listIndex;
     s_listIndex = lists.findIndex((item) => item.id === bid);
     if (s_listIndex < 0) return;
 
@@ -144,8 +146,8 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem("prac-kanban", JSON.stringify(lists))
-  }, [lists]);
+    localStorage.setItem("prac-kanban", JSON.stringify(boards))
+  }, [boards]);
 
   useEffect(() => {
     setLists(activeBoard.list);
