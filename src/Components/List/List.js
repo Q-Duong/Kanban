@@ -11,7 +11,9 @@ function List(props) {
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
-    <div className="list">
+    <div
+      onDragEnter={() => props.dragEntered(props.list.id)}
+      className="list">
       <div className="list_header">
         <p className="list_header_title">
           {props.list?.title}
@@ -39,7 +41,6 @@ function List(props) {
             card={item}
             listId={props.list.id}
             removeCard={props.removeCard}
-            dragEntered={props.dragEntered}
             dragEnded={props.dragEnded}
             updateCard={props.updateCard}
           />

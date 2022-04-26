@@ -17,7 +17,6 @@ function App() {
 
   const [targetCard, setTargetCard] = useState({
     bid: "",
-    cid: "",
   });
 
   const addlistHandler = (name) => {
@@ -110,28 +109,22 @@ function App() {
     t_listIndex = lists.findIndex((item) => item.id === targetCard.bid);
     if (t_listIndex < 0) return;
 
-    t_cardIndex = lists[t_listIndex]?.cards?.findIndex(
-      (item) => item.id === targetCard.cid
-    );
-    if (t_cardIndex < 0) return;
 
     const tempLists = [...lists];
     const sourceCard = tempLists[s_listIndex].cards[s_cardIndex];
     tempLists[s_listIndex].cards.splice(s_cardIndex, 1);
-    tempLists[t_listIndex].cards.splice(t_cardIndex, 0, sourceCard);
+    tempLists[t_listIndex].cards.unshift(sourceCard);
     setLists(tempLists);
 
     setTargetCard({
-      bid: "",
-      cid: "",
+      bid: ""
     });
   };
 
-  const dragEntered = (bid, cid) => {
-    if (targetCard.cid === cid) return;
+  const dragEntered = (bid) => {
+    if (targetCard.bid === bid) return;
     setTargetCard({
-      bid,
-      cid,
+      bid
     });
   };
 
