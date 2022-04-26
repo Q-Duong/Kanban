@@ -15,6 +15,61 @@
 .nav-item{
   opacity: 1;
 }
+.board_i{
+  margin-top: 5px;
+}
+.input_vl{
+  clear: both;
+  width: 100%;
+  padding-top: 10px;
+}
+.nav-item .input_Name{
+  border: 2px solid #0079bf;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  padding: 10px;
+  width: 75%;
+  margin-left: 5px;
+}
+.Btn_Del{
+  float: right;
+  margin-right: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+.Board_display{
+  margin: 0 0 5px 5px;
+}
+.add_button{
+  cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    background-color: #0079bf;
+    color: #fff;
+    border: 2px;
+    transition: 100ms ease;
+    padding: 10px;
+    border: 2px solid #0079bf;
+    margin: 0 5px 0 5px;
+}
+.Board_title{
+  border: 0;
+  font-size: 18px;
+  width: 90%;
+  text-align: left;
+  cursor: pointer;
+float: right;
+}
+.Board_info{
+  width: 80%;
+  float: left;
+  background-color: transparent;
+}
+.Board_info:hover{
+  background-color: #fff;
+  border-radius: 5px;
+}
 #sidebar-wrapper{
   min-height: 100vh !important;
   width: 100vw;

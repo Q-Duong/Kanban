@@ -9,7 +9,7 @@ function App() {
 
   const [boards, setBoards] = useState(
     JSON.parse(localStorage.getItem('prac-kanban')) ||
-    [{ id: 1, title: "default", list: []}]
+    [{ id: 1, title: "Default", list: []}]
   );
    
   const [activeBoard, setActiveBoard] = useState(boards[0])
@@ -32,6 +32,10 @@ function App() {
 
   const addboardHandler = (name) => {
     const tempBoards = [...boards];
+    if(boards.find(board => board.title === name)){
+      window.alert('Trùng tên board');
+      return;
+    }
     tempBoards.push({
       id: Date.now() + Math.random() * 2,
       title: name,
@@ -60,7 +64,7 @@ function App() {
     const tempBoards = boards.filter((item) => item.id !== id);
     if (tempBoards.length === 0)
       tempBoards.push({
-        id: 1, title: "default", list: []
+        id: 1, title: "Default", list: []
       });      
   
     if (activeBoard.id === id)
@@ -146,9 +150,11 @@ function App() {
   };
 
   useEffect(() => {
+    activeBoard.list = lists;
     localStorage.setItem("prac-kanban", JSON.stringify(boards))
   }, [boards,lists]);
 
+  
   useEffect(() => {
     setLists(activeBoard.list);
   }, [activeBoard]);

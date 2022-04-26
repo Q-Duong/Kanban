@@ -1,7 +1,14 @@
 import React from "react";
 import {Nav} from "react-bootstrap";
 import { withRouter } from "react-router";
+import {
+    Clipboard,
+    Delete,
+    Trash,
+    Trash2
+  } from "react-feather";
 import '../Board/Board.css'
+
 
 
 const Side = props => {
@@ -28,21 +35,32 @@ const Side = props => {
             activeKey="/"
             >
                 <div className="sidebar-sticky"></div>
+                
                 {
                     boards.map(board => (
                         <Nav.Item >
-                            <button onClick={() => {handleChangeActiveBoard(board.id)}}>{board.title}</button>
-                            <button onClick={() => {handleRemoveBoard(board.id)}}>xoa</button>
+                            <div className="Board_display">
+                                <div className="Board_info">
+                                    <Clipboard size='18px' className="board_i"/>
+                                    <p className="Board_title" onClick={() => {handleChangeActiveBoard(board.id)}}>{board.title}</p>
+                                </div>
+                                <div className="Btn_Del">
+                                    <Trash2 className="board_i" size='18px'  onClick={() => {handleRemoveBoard(board.id)}} />
+                                </div>
+                            </div>
                         </Nav.Item>
                     ))
                 }
+                <Nav.Item>
+                <div className="input_vl">
+                     <form onSubmit={handleAddBoard} >
+                        <input type="text" placeholder="Add board" name="boardName" className="input_Name" required></input>
+                        <input type="submit" value="Add" className="add_button"></input>
+                    </form>
+                </div>
+                </Nav.Item>
             </Nav>
-            <Nav.Item>
-                 <form onSubmit={handleAddBoard}>
-                    <input type="text" placeholder="nhap ten board" name="boardName"></input>
-                    <input type="submit" value="add"></input>
-                </form>
-            </Nav.Item>
+            
         </>
         );
   };
