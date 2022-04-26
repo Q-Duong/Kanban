@@ -5,20 +5,18 @@ import Board from "./Components/Board/Board";
 import "./App.css";
 import Editable from "./Components/Editabled/Editable";
 
-
-
 function App() {
-  const [lists, setLists] = useState(
-    JSON.parse(localStorage.getItem("prac-kanban")) || []
-  );
 
-  const [boards, setBoards] = useState(
-    JSON.parse(localStorage.getItem("prac-kanban")) || []
-  );
+  const [boards, setBoards] = useState([
+    { id: 1, title: "default", list: []}
+   ]);
+   
+  const [activeBoard, setActiveBoard] = useState(boards[0])
+
+  const [lists, setLists] = useState(activeBoard.list);
 
   const [targetCard, setTargetCard] = useState({
     bid: "",
-    cid: "",
   });
 
   const addlistHandler = (name) => {
@@ -32,14 +30,20 @@ function App() {
   };
 
   const addboardHandler = (name) => {
-    const tempBoards = [...lists];
+    const tempBoards = [...boards];
     tempBoards.push({
       id: Date.now() + Math.random() * 2,
       title: name,
-      // cards: [],
+      list: []
     });
     setBoards(tempBoards);
   };
+
+  const changeActiveBoard = (id) => {
+    const tempActiveBoard = boards.find(board => board.id === id);
+    activeBoard.list = lists;
+    setActiveBoard(tempActiveBoard);
+  }
 
   const removeList = (id) => {
     const index = lists.findIndex((item) => item.id === id);
@@ -51,12 +55,15 @@ function App() {
   };
 
   const removeboard = (id) => {
-    const index = lists.findIndex((item) => item.id === id);
-    if (index < 0) return;
-
-    const tempBoards = [...boards];
-    tempBoards.splice(index, 1);
-    setLists(tempBoards);
+    const tempBoards = boards.filter((item) => item.id !== id);
+    if (tempBoards.length === 0)
+      tempBoards.push({
+        id: 1, title: "default", list: []
+      });      
+  
+    if (activeBoard.id === id)
+      setActiveBoard(tempBoards[0]);
+    setBoards(tempBoards);
   };
 
   const addCardHandler = (id, title) => {
@@ -102,28 +109,22 @@ function App() {
     t_listIndex = lists.findIndex((item) => item.id === targetCard.bid);
     if (t_listIndex < 0) return;
 
-    t_cardIndex = lists[t_listIndex]?.cards?.findIndex(
-      (item) => item.id === targetCard.cid
-    );
-    if (t_cardIndex < 0) return;
 
     const tempLists = [...lists];
     const sourceCard = tempLists[s_listIndex].cards[s_cardIndex];
     tempLists[s_listIndex].cards.splice(s_cardIndex, 1);
-    tempLists[t_listIndex].cards.splice(t_cardIndex, 0, sourceCard);
+    tempLists[t_listIndex].cards.unshift(sourceCard);
     setLists(tempLists);
 
     setTargetCard({
-      bid: "",
-      cid: "",
+      bid: ""
     });
   };
 
-  const dragEntered = (bid, cid) => {
-    if (targetCard.cid === cid) return;
+  const dragEntered = (bid) => {
+    if (targetCard.bid === bid) return;
     setTargetCard({
-      bid,
-      cid,
+      bid
     });
   };
 
@@ -143,12 +144,15 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem("prac-kanban", JSON.stringify(lists));
+    localStorage.setItem("prac-kanban", JSON.stringify(lists))
   }, [lists]);
 
+  useEffect(() => {
+    setLists(activeBoard.list);
+  }, [activeBoard]);
+
   return (
-    <div className="app">
-      
+    <div className="app"> 
       <div className="topnav">
         <a className="active" href="#home">Trello</a>
         <a href="#about">Workspaces</a>
@@ -157,8 +161,18 @@ function App() {
         <a href="#contact">Templates</a>
         <input type="text" placeholder="Search.." />
       </div>
+<<<<<<< HEAD
       
       
+=======
+      <Board
+        boards={boards}
+        addboardHandler={addboardHandler}
+        changeActiveBoard={changeActiveBoard}
+        removeBoardHandler={removeboard}
+      >
+      </Board>
+>>>>>>> 2ee302f62419ba9730da0838e2f4503275e3967d
 
       <div className="app_lists_container">
       <Board></Board>
