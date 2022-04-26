@@ -161,10 +161,8 @@ function App() {
         <a href="#contact">Templates</a>
         <input type="text" placeholder="Search.." />
       </div>
-<<<<<<< HEAD
-      
-      
-=======
+
+      <div className="app_lists_container">
       <Board
         boards={boards}
         addboardHandler={addboardHandler}
@@ -172,10 +170,6 @@ function App() {
         removeBoardHandler={removeboard}
       >
       </Board>
->>>>>>> 2ee302f62419ba9730da0838e2f4503275e3967d
-
-      <div className="app_lists_container">
-      <Board></Board>
         <div className="app_lists">
           {lists.map((item) => (
             <List
